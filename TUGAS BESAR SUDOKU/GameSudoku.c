@@ -17,9 +17,7 @@ int BaseSudoku(){
       table = (struct sudoku**)malloc(size * sizeof(struct sudoku*));
       for(i = 0; i < size; i++)
         table[i] = (struct sudoku*)malloc(size * sizeof(struct sudoku));
-
-      printf("\n---------- 2: RANDOM A SUDOKU TABLE ------------------\n\n");
-      printf("Full Sudoku table[%d][%d]: \n", size, size);
+		
 	    sudokuGenerator(table, n, 0, 0);
 	    showFull(table, n);
 		return 0;
