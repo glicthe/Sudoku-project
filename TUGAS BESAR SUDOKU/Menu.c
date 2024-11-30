@@ -38,7 +38,7 @@ void startGame() {
     
     if (mode == 1) {
 		printf("Kamu memilih mode Mudah.\n");
-		kondisiAwalSudoku();
+		BaseSudoku();
 	}
     else if (mode == 2) {
 		printf("Kamu memilih mode Sedang.\n");	
