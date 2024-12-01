@@ -14,6 +14,7 @@ void kursorOut(int x, int y) {
     SetConsoleCursorPosition(hOut, p);
 }
 
+//randomnya masukin disini
 void initPapan(char papan[9][9]) {
 	int i,j;
     for(i = 0; i < 9; i++) {
