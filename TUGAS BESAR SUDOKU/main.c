@@ -10,11 +10,17 @@ int main(int argc, char *argv[]) {
     // Loop untuk menampilkan menu sampai user memilih "Exit"
     while (1) {
         
-        printf("\n=== MENU UTAMA SUDOKU ===\n");
+        kursorOut(71, 10);
+        printf("=== MENU UTAMA SUDOKU ===\n");
+        kursorOut(71, 11);
         printf("1. Start\n");
+        kursorOut(71, 12);
         printf("2. Load Game\n");
+        kursorOut(71, 13);
         printf("3. Highscore\n");
+        kursorOut(71, 14);
         printf("4. Exit\n");
+        kursorOut(71, 15);
         printf("Pilih opsi (1-4): ");
         scanf("%d", &choice);
         getchar(); // Untuk menangani enter setelah input angka

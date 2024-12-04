@@ -3,56 +3,141 @@
 #include <time.h>
 #include <windows.h>
 #include <string.h>
+#include <pthread.h>
+#include <unistd.h>
 #include "GameSudoku.h"
+#include "PlaySudoku.h"
 
-int BaseSudoku(){
+
+
+int BaseSudoku(int mode){
+	int i, m;
+	int n = 3;
+	int size = n * n;
+	struct sudoku** table;
+	table = (struct sudoku**)malloc(size * sizeof(struct sudoku*));
+	for(i = 0; i < size; i++)
+        table[i] = (struct sudoku*)malloc(size * sizeof(struct sudoku));     
 	while(1) {
 		srand(time(NULL));
-	    int i, j, m;
-	    int n = 3;
-	    struct sudoku** table;
-	    int size = n * n;
+	    char papan[9][9];
 	    // 1.3. Get n, m 
       
-      table = (struct sudoku**)malloc(size * sizeof(struct sudoku*));
-      for(i = 0; i < size; i++)
-        table[i] = (struct sudoku*)malloc(size * sizeof(struct sudoku));
-		
 	    sudokuGenerator(table, n, 0, 0);
-	    showFull(table, n);
+	    inputToCompare(table, n);
+	    hideNumbers(table, n, &m, mode);
+	    
+	    
+	    kursorOut(67, 13);
+		printf("Permainan akan segera dimulai...");
+	    Sleep(1000);
+		goto Play;
+		
+		
+		Play:
+			system("cls");
+			play(table, &m, papan);
+			if (m == 81) {	
+				kursorOut(70, 10);
+				printf("======Selamat Anda Menang!!======");
+				Sleep(1000);
+				system("cls");
+			}
+			else {	
+				kursorOut(69, 10);
+				printf("====Sayang Sekali Anda Payah!!====");
+				Sleep(1000);
+				system("cls");
+			} 
+			kursorOut(64, 10);
+			printf("Anda Sebentar Lagi akan Dialihkan ke Menu");
+			Sleep(1000);
+			Sleep(500);
+   			system("cls");
+			return;
+		
+			
 		return 0;
 	}
+	
+	
+}
+
+void play(struct sudoku** table, int* m, char sudoku[9][9]) {
+	// i untuk baris
+	// j untuk kolom
+	int i = 10, j = 10, val, salah = 0;
+	int n = 3;
+	while (*m < 81){
+		inputInJ:
+			initPapan(sudoku, table, n);
+			system("cls");
+		//	pthread_t newThread;
+		//	pthread_create(&newThread, NULL, timer, NULL);
+		//	printf("\n");
+			printPapan(sudoku, salah, i, j);
+			kursorOut(38, 45);
+			printf("Masukkan Nomor Baris: ");
+			scanf("%d", &i);
+			kursorOut(38, 47);
+			printf("Masukkan Nomor Kolom: ");
+			scanf("%d", &j);
+			system("cls");
+			printPapan(sudoku, salah, i, j);
+		if (sudoku[i-1][j-1] == ' ') {
+			kursorOut(38, 45);
+			printf("Masukkan Nomor Yang Ingin Diinput: ");
+			scanf("%d", &val);
+			if (val == table[i-1][j-1].compare) {
+				table[i-1][j-1].mask = 1;
+				val = 0;
+				*m = *m + 1;
+			} else {
+				salah++;
+				if (salah != 3) goto inputInJ;
+				else {
+					system("cls");
+					break;	
+				}
+			}
+		} else {
+			kursorOut(38, 45);
+			printf("Sudoku sudah memiliki nilai!!");
+			Sleep(700);
+			goto inputInJ;
+		} 
+	}	
+	system("cls");
 }
 
 int sudokuGenerator(struct sudoku** table, int n, int x, int y){
-// 1. Delcare some vars
-	int i, j; // loop indexes.
-	int size = n*n; // sudoku width.
+	int i, j; 
+	int size = n*n; 
 	
 	// 2. Mask Array
 	int* maskArray = (int*)malloc(size*sizeof(int*));
-	// Mark 1 as the POSIBLE value.
+	// tandai 1 untuk value yang mungkin
 	for (i = 0; i < size; i++) maskArray[i] = 1;
     
-	// 3. Find and mark 0 as IMPOSIBLE values.
+	// 3. cari dan tandai untuk value yang tidak mungkin
     for (i = 0; i < y; i++) maskArray[table[x][i].number - 1] = 0;
     for (i = 0; i < x; i++) maskArray[table[i][y].number - 1] = 0;
     for (i = (n * (int)(x/n)); i < (n * (int)(x/n) + n); i++)
         for (j = (n * (int)(y/n)); j < y; j++)
             maskArray[table[i][j].number - 1] = 0;
     
-	// 4. Group all possible values into a new array
-    // 4.1. Declare and allocate a new array
+	// 4. kelompokkan semua value yang mungkin ke dalam array baru
+    // 4.1. Declare dan allocate array baru
     int k = 0;
-    for (i = 0; i < size; i++) k += maskArray[i]; // ount
+    for (i = 0; i < size; i++) k += maskArray[i]; 
     int* randArray;
     randArray = (int*)malloc(k * sizeof(int*));
-    // 4.2. Assign those values into this array.
-    j = 0; // reset j for a new loop
+    // 4.2. masukkan array tersebut ke dalam array berikut
+    j = 0; // reset j 
     for (i = 0; i < size; i++) {
-        if (maskArray[i] == 1) { // Neu the position i is a possible value
-            randArray[j] = i + 1; // Do assign
-            j++; // go to the next position
+        if (maskArray[i] == 1) { // posisi i merupakan posisi yang mungkin
+            randArray[j] = i + 1; // assign value
+            j++;
         } else continue;
     }
     
@@ -91,19 +176,121 @@ int sudokuGenerator(struct sudoku** table, int n, int x, int y){
     return 0;
 }
 
-void showFull(struct sudoku** table, int n) {
-	int size = n * n;
-    int i, j;
-    char format[5];
+void inputToCompare(struct sudoku** table, int n){
+	int i, j, size = n * n;
     for (i = 0; i < size; i++) {
         for (j = 0; j < size; j++) {
-        	if (size > 10 && table[i][j].number < 10) strcpy(format, "0%d ");
-        	else strcpy(format, "%d ");
-	        printf(format, table[i][j].number);
-	        if ((j+1)%n == 0) printf(" ");
-	        Sleep(10);
+	        table[i][j].compare = table[i][j].number;
+		}
+	}
+}
+
+void hideNumbers(struct sudoku **table, int n, int* m, int mode) {
+    int i, j, x, y, size = n * n;
+    // 1. Set mask=0 for all cells.
+    if (mode == 1) *m = 45;
+    else if (mode == 2) *m = 30;
+    else *m = 20;
+    
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+        	table[i][j].mask = 0;
         }
-        if ((i+1) % n == 0) printf("\n");
-        printf("\n");
+    }
+    // 2. Randomly change open m cells.
+    for (i = 0; i < *m; i++) {
+    	do {
+    		x = rand() % size;
+    		y = rand() % size;
+    	} while (table[x][y].mask == 1); // if this cell was changed before.
+    	table[x][y].mask = 1; // Set mask=1 for cell(x,y)
     }
 }
+
+void initPapan(char sudoku[9][9], struct sudoku** table, int n) {
+    int i, j, size = n * n;
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+	        if (table[i][j].mask == 0) sudoku[i][j] = ' '; // mask=0
+	        else sudoku[i][j]= table[i][j].number + '0'; // mask=1
+		}
+	}
+}
+ 
+void printPapan(char sudoku[9][9], int salah, int b, int k)
+{
+	int i;
+	
+	kursorOut(38,10);
+		printf("salah: %d/3", salah);
+	
+	kursorOut(54,5);
+	for(i=0;i<9;i++){
+		if (i+1 == k){
+			setTextColor(9);
+			printf("   %d  ",i+1);
+			setTextColor(15);
+		} else printf("   %d  ",i+1);
+	}
+    // Baris horizontal atas
+    kursorOut(54, 6);
+    printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
+           218, 196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194, 
+           196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194,
+           196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 191);
+
+    // Nomor kolom dan baris sel dengan kontennya
+    for(i = 0; i < 9; i++) {
+        // Baris untuk nomor        
+        kursorOut(54, 7 + i * 4); 
+        printf("%c     %c     %c     %c     %c     %c     %c     %c     %c     %c", 
+            179, 179, 179, 179, 179, 179, 179, 179, 179, 179);
+		// Baris untuk konten
+        kursorOut(54, 8 + i * 4);
+		printf("%c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c", 
+               179, sudoku[i][0], 179, sudoku[i][1], 179, sudoku[i][2], 179, sudoku[i][3], 179, 
+               sudoku[i][4], 179, sudoku[i][5], 179, sudoku[i][6], 179, sudoku[i][7], 179, sudoku[i][8], 179);
+		
+        kursorOut(180, 8 + i * 4);
+        if (i+1 == b) {
+        	setTextColor(9);
+        	printf(" %d", i+1);
+        	setTextColor(15);
+		} else printf(" %d", i+1);
+        // Baris kosong
+        kursorOut(54, 9 + i * 4);
+        printf("%c     %c     %c     %c     %c     %c     %c     %c     %c     %c", 
+               179, 179, 179, 179, 179, 179, 179, 179, 179, 179);
+        
+        // Garis horizontal pembatas (kecuali baris terakhir)
+        if(i < 8) {
+            kursorOut(54, 10 + i * 4);
+            printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
+                   195, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197,
+                   196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197,
+                   196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 180);
+        }
+    }
+
+    // Garis horizontal bawah
+    kursorOut(54, 42);
+    printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
+           192, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193,
+           196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193,
+           196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 217);
+    
+}
+
+void kursorOut(int x, int y) {
+    COORD p;
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    p.X = x;
+    p.Y = y;
+    SetConsoleCursorPosition(hOut, p);
+}
+
+void setTextColor(int color) {
+   HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+   SetConsoleTextAttribute(hCon,color);
+}
+
