@@ -21,7 +21,6 @@ int BaseSudoku(int mode){
 	while(1) {
 		srand(time(NULL));
 	    char papan[9][9];
-	    // 1.3. Get n, m 
       
 	    sudokuGenerator(table, n, 0, 0);
 	    inputToCompare(table, n);
@@ -141,7 +140,7 @@ int sudokuGenerator(struct sudoku** table, int n, int x, int y){
         } else continue;
     }
     
-	// 5. Compute the next cell position.
+	// 5. menghitung posisi sel selanjutnya.
     int newX, newY;
     if (x == size-1) {
         newY = y + 1;
@@ -151,27 +150,27 @@ int sudokuGenerator(struct sudoku** table, int n, int x, int y){
         newX = x + 1;
     }	
 	
-	// 6. Take random possible values into current cell.
-    while (k > 0) { // And try all of them.
+	// 6. Ambil nilai acak yang memungkinkan ke dalam sel saat ini.
+    while (k > 0) { // coba semuanya
         int index = rand() % k; 
         table[x][y].number = randArray[index];
         for (i = index; i < (k-1); i++) randArray[i] = randArray[i+1];
         k--;
 		
-		// Stop if at the last cell.
+		// berhenti jika berada di sel terakhir
 		if ((x == size-1) && (y == size-1)) {
         free(randArray); free(maskArray);
         return 1; 
     }
         
-    // Or go to the next cell
+    // atau ke sel berikutnya
     if (sudokuGenerator(table, n, newX, newY)) {
        free(randArray); free(maskArray);
        return 1;
     }
     }
     
-	// 7. Release memory.
+	// 7. melepaskan memory
     free(randArray); free(maskArray);
     return 0;
 }
@@ -187,7 +186,7 @@ void inputToCompare(struct sudoku** table, int n){
 
 void hideNumbers(struct sudoku **table, int n, int* m, int mode) {
     int i, j, x, y, size = n * n;
-    // 1. Set mask=0 for all cells.
+    // 1. atur mask=0 untuk semua sel
     if (mode == 1) *m = 45;
     else if (mode == 2) *m = 30;
     else *m = 20;
@@ -197,13 +196,13 @@ void hideNumbers(struct sudoku **table, int n, int* m, int mode) {
         	table[i][j].mask = 0;
         }
     }
-    // 2. Randomly change open m cells.
+    // 2. mengubah sel m terbuka secara acak
     for (i = 0; i < *m; i++) {
     	do {
     		x = rand() % size;
     		y = rand() % size;
-    	} while (table[x][y].mask == 1); // if this cell was changed before.
-    	table[x][y].mask = 1; // Set mask=1 for cell(x,y)
+    	} while (table[x][y].mask == 1); // jika sel telah berubah sebelumnya
+    	table[x][y].mask = 1; // atur mask=1 untuk sel(x,y)
     }
 }
 
