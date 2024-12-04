@@ -27,6 +27,8 @@ void initPapan(char papan[9][9]) {
 void printPapan(char sudoku[9][9])
 {
 	int i;
+	kursorOut(54,5);
+	printf("   1     2     3     4     5     6     7     8     9");
     // Baris horizontal atas
     kursorOut(54, 6);
     printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
@@ -38,14 +40,14 @@ void printPapan(char sudoku[9][9])
     for(i = 0; i < 9; i++) {
         // Baris untuk nomor
         kursorOut(54, 7 + i * 4);
-        printf("%c%2d   %c%2d   %c%2d   %c%2d   %c%2d   %c%2d   %c%2d   %c%2d   %c%2d   %c", 
-               179, i*9+1, 179, i*9+2, 179, i*9+3, 179, i*9+4, 179, i*9+5, 179, i*9+6, 179, i*9+7, 179, i*9+8, 179, i*9+9, 179);
+        printf("%c     %c     %c     %c     %c     %c     %c     %c     %c     %c", 
+               179, 179, 179, 179, 179, 179, 179, 179, 179, 179);
         
         // Baris untuk konten
         kursorOut(54, 8 + i * 4);
-        printf("%c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c", 
+        printf("%c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c %d", 
                179, sudoku[i][0], 179, sudoku[i][1], 179, sudoku[i][2], 179, sudoku[i][3], 179, 
-               sudoku[i][4], 179, sudoku[i][5], 179, sudoku[i][6], 179, sudoku[i][7], 179, sudoku[i][8], 179);
+               sudoku[i][4], 179, sudoku[i][5], 179, sudoku[i][6], 179, sudoku[i][7], 179, sudoku[i][8], 179, i+1);
         
         // Baris kosong
         kursorOut(54, 9 + i * 4);
