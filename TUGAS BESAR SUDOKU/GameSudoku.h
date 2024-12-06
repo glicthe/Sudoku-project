@@ -11,6 +11,7 @@ struct sudoku{
 
 void kursorOut(int, int);
 void setTextColor(int);
+void bannerSudoku(int, int);
 int BaseSudoku(int, int);
 int sudokuGenerator(struct sudoku**,int,int,int);
 void inputToCompare(struct sudoku**, int);
