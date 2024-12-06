@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o GameSudoku.o Menu.o PlaySudoku.o
-LINKOBJ  = main.o GameSudoku.o Menu.o PlaySudoku.o
+OBJ      = main.o GameSudoku.o Menu.o LoadSudoku.o
+LINKOBJ  = main.o GameSudoku.o Menu.o LoadSudoku.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -33,5 +33,5 @@ GameSudoku.o: GameSudoku.c
 Menu.o: Menu.c
 	$(CC) -c Menu.c -o Menu.o $(CFLAGS)
 
-PlaySudoku.o: PlaySudoku.c
-	$(CC) -c PlaySudoku.c -o PlaySudoku.o $(CFLAGS)
+LoadSudoku.o: LoadSudoku.c
+	$(CC) -c LoadSudoku.c -o LoadSudoku.o $(CFLAGS)

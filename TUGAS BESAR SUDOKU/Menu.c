@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "GameSudoku.h"
-#include "PlaySudoku.h"
+#include "LoadSudoku.h"
 
-void startGame() {
+void startGame(int opsi) {
     int mode;
     char nama[50];
     FILE* fp;
@@ -47,17 +47,17 @@ void startGame() {
     if (mode == 1) {
     	kursorOut(67, 11);
 		printf("Kamu memilih mode Mudah.");
-		BaseSudoku(mode);
+		BaseSudoku(mode, opsi);
 	}
     else if (mode == 2) {
     	kursorOut(67, 11);
 		printf("Kamu memilih mode Sedang.");	
-		BaseSudoku(mode);
+		BaseSudoku(mode, opsi);
 	}
 	else {
 		kursorOut(67, 11);
 		printf("Kamu memilih mode Sulit.");
-		BaseSudoku(mode);
+		BaseSudoku(mode, opsi);
 	}
 
 
@@ -65,15 +65,14 @@ void startGame() {
 }
 
 // Fungsi untuk memuat game yang tersimpan
-void loadGame() {
-    printf("\n=== Memuat Game Tersimpan ===\n");
-    printf("Fitur Load Game belum tersedia.\n");
-    printf("Tekan Enter untuk kembali ke menu utama.");
-    getchar(); // Menunggu user menekan enter sebelum kembali ke menu
+void loadGame(int opsi) {
+	int mode = 0;
+    
+    BaseSudoku(mode, opsi);
 }
 
 // Fungsi untuk menampilkan skor tertinggi
-void highscore() {
+void highscore(int opsi) {
     printf("\n=== Highscore ===\n");
     printf("Fitur Highscore belum tersedia.\n");
     printf("Tekan Enter untuk kembali ke menu utama.");

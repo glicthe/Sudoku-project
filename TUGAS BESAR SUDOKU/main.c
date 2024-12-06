@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
 
     // Loop untuk menampilkan menu sampai user memilih "Exit"
     while (1) {
-        
+        int opsi;
         kursorOut(71, 10);
         printf("=== MENU UTAMA SUDOKU ===\n");
         kursorOut(71, 11);
@@ -28,19 +28,19 @@ int main(int argc, char *argv[]) {
 
         switch (choice) {
             case 1:
-                
-                startGame();
+                opsi = 1;
+                startGame(opsi);
                 system("cls"); // Bersihkan layar sebelum masuk ke menu Start
                 break;
                 
             case 2:
-                
-                loadGame();
+                opsi = 2;
+                loadGame(opsi);
                 system("cls"); // Bersihkan layar sebelum masuk ke Load Game
                 break;
             case 3:
-                
-                highscore();
+                opsi = 3;
+                highscore(opsi);
                 system("cls"); // Bersihkan layar sebelum masuk ke Highscore
                 break;
             case 4:
