@@ -6,12 +6,101 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "GameSudoku.h"
-#include "LoadSudoku.h"
+#include "PlaySudoku.h"
 
+void bannerSudoku(int x, int y) {
+	
+    //Mencetak S besar
+    setTextColor(12);
+    kursorOut(x, y);
+    printf(" %c%c%c%c", 178, 178, 178, 178);
+    kursorOut(x, y+1);
+    printf("%c%c", 178, 178);
+    kursorOut(x, y+2);
+    printf("%c%c%c%c%c", 178, 178, 178, 178, 178);
+    setTextColor(15);
+    kursorOut(x+4, y+3);
+    printf("%c%c", 178, 178);
+    kursorOut(x, y+4);
+    printf("%c%c%c%c%c", 178, 178, 178, 178, 178);
 
+    //Mencetak U besar
+    setTextColor(12);
+    kursorOut(x+12, y);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+12, y+1);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+12, y+2);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    setTextColor(15);
+    kursorOut(x+12, y+3);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+12, y+4);
+    printf("%c%c%c%c%c%c%c", 178, 178, 178, 178, 178, 178, 178);
 
-int BaseSudoku(int mode, int opsi){
-	int i, m, sisa, salah = 0;
+    //Mencetak D besar
+    setTextColor(12);
+    kursorOut(x+24, y);
+    printf("%c%c%c%c%c%c", 178, 178, 178, 178, 178, 178);
+    kursorOut(x+24, y+1);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+24, y+2);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    setTextColor(15);
+    kursorOut(x+24, y+3);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+24, y+4);
+    printf("%c%c%c%c%c%c", 178, 178, 178, 178, 178, 178);
+
+    //Mencetak O besar
+    setTextColor(12);
+    kursorOut(x+36, y);
+    printf("%c%c%c%c%c", 178, 178, 178, 178, 178);
+    kursorOut(x+35, y+1);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+35, y+2);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    setTextColor(15);
+    kursorOut(x+35, y+3);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+36, y+4);
+    printf("%c%c%c%c%c", 178, 178, 178, 178, 178);
+
+    //Mencetak K besar
+    setTextColor(12);
+    kursorOut(x+48, y);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+48, y+1);
+    printf("%c%c %c%c", 178, 178, 178, 178);
+    kursorOut(x+48, y+2);
+    printf("%c%c%c%c", 178, 178, 178, 178);
+    setTextColor(15);
+    kursorOut(x+48, y+3);
+    printf("%c%c %c%c", 178, 178, 178, 178);
+    kursorOut(x+48, y+4);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+
+    //Mencetak U besar
+    setTextColor(12);
+    kursorOut(x+60, y);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+60, y+1);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+60, y+2);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    setTextColor(15);
+    kursorOut(x+60, y+3);
+    printf("%c%c   %c%c", 178, 178, 178, 178);
+    kursorOut(x+60, y+4);
+    printf("%c%c%c%c%c%c%c", 178, 178, 178, 178, 178, 178, 178);
+}
+
+void skorMain(int score){
+	score=0;
+}
+
+int BaseSudoku(int mode){
+	int i, m;
 	int n = 3;
 	int size = n * n;
 	struct sudoku** table;
@@ -21,47 +110,30 @@ int BaseSudoku(int mode, int opsi){
 	while(1) {
 		srand(time(NULL));
 	    char papan[9][9];
+      
+	    sudokuGenerator(table, n, 0, 0);
+	    inputToCompare(table, n);
+	    hideNumbers(table, n, &m, mode);
 	    
-	    if (opsi == 1) goto NewSudoku;
-	    else if (opsi == 2) goto LoadSudoku;
-		
-	    NewSudoku:
-      		sudokuGenerator(table, n, 0, 0);
-      		hideNumbers(table, n, &m, mode);
-	    	kursorOut(67, 13);
-			printf("Permainan akan segera dimulai...");
-	    	Sleep(1000);
-			goto Play;
 	    
-	    LoadSudoku:
-	    	loadGameSudoku(table, &m, salah);
-	    	kursorOut(69, 13);
-			printf("=== Memuat Game Tersimpan ===");
-    		Sleep(1000);
-	    	goto Play;
+	    kursorOut(67, 13);
+		printf("Permainan akan segera dimulai...");
+	    Sleep(1000);
 		
-		
-		Play:
 			system("cls");
-			inputToCompare(table, n);
-			play(table, &m, papan, &salah);
+			play(table, &m, papan);
 			if (m == 81) {	
 				kursorOut(70, 10);
 				printf("======Selamat Anda Menang!!======");
 				Sleep(1000);
 				system("cls");
-				goto Return;
 			}
-			else if (salah == 3) {	
+			else {	
 				kursorOut(69, 10);
 				printf("====Sayang Sekali Anda Payah!!====");
 				Sleep(1000);
 				system("cls");
-				goto Return;
-			} else goto Return;
-		
-		
-		Return:	
+			} 
 			kursorOut(64, 10);
 			printf("Anda Sebentar Lagi akan Dialihkan ke Menu");
 			Sleep(1000);
@@ -76,40 +148,27 @@ int BaseSudoku(int mode, int opsi){
 	
 }
 
-void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
+void play(struct sudoku** table, int* m, char sudoku[9][9]) {
 	// i untuk baris
 	// j untuk kolom
-	int i = 10, j = 10, val;
+	int i = 10, j = 10, val, salah = 0;
 	int n = 3;
-	int sisa;
-	int datasalah;
 	while (*m < 81){
 		inputInJ:
-			sisa = *m;
-			datasalah = *salah;
 			initPapan(sudoku, table, n);
 			system("cls");
 		//	pthread_t newThread;
 		//	pthread_create(&newThread, NULL, timer, NULL);
 		//	printf("\n");
-			printPapan(sudoku, *salah, i, j);
+			printPapan(sudoku, salah, i, j);
 			kursorOut(38, 45);
 			printf("Masukkan Nomor Baris: ");
 			scanf("%d", &i);
-		//pause game	
-		if (i == 11){
-			int cek = 2;
-			cek = PauseGame(table, sisa, datasalah);
-			system("cls");
-			
-			if (cek == 0) goto inputInJ;
-			else break;
-		}
 			kursorOut(38, 47);
 			printf("Masukkan Nomor Kolom: ");
 			scanf("%d", &j);
 			system("cls");
-			printPapan(sudoku, *salah, i, j);
+			printPapan(sudoku, salah, i, j);
 		if (sudoku[i-1][j-1] == ' ') {
 			kursorOut(38, 45);
 			printf("Masukkan Nomor Yang Ingin Diinput: ");
@@ -119,8 +178,8 @@ void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
 				val = 0;
 				*m = *m + 1;
 			} else {
-				*salah = *salah + 1;
-				if (*salah != 3) goto inputInJ;
+				salah++;
+				if (salah != 3) goto inputInJ;
 				else {
 					system("cls");
 					break;	
@@ -134,30 +193,6 @@ void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
 		} 
 	}	
 	system("cls");
-}
-
-int PauseGame(struct sudoku** table, int sisa, int salah){
-	int pause = 0;
-	while (pause != 1 || pause != 2) {
-		
-		system("cls");
-		kursorOut(71, 10);
-		printf("=====PAUSE GAME=====");
-		kursorOut(71, 11);
-		printf("1. Lanjut game");
-		kursorOut(71, 12);
-		printf("2. Save and Exit");
-		kursorOut(71, 13);
-		printf("Pilih Opsi 1 atau 2: ");
-		scanf("%d", &pause);	
-		
-		if (pause == 1) return 0;
-		else if (pause == 2) {
-			loadSudoku(table, sisa, salah);
-			return 1;
-		}
-		else continue;
-	}
 }
 
 int sudokuGenerator(struct sudoku** table, int n, int x, int y){
@@ -272,10 +307,7 @@ void printPapan(char sudoku[9][9], int salah, int b, int k)
 	int i;
 	
 	kursorOut(38,10);
-	printf("salah: %d/3", salah);
-		
-	kursorOut(25, 15);
-	printf("ketik 11 untuk pause game");
+		printf("salah: %d/3", salah);
 	
 	kursorOut(54,5);
 	for(i=0;i<9;i++){
@@ -304,7 +336,7 @@ void printPapan(char sudoku[9][9], int salah, int b, int k)
                179, sudoku[i][0], 179, sudoku[i][1], 179, sudoku[i][2], 179, sudoku[i][3], 179, 
                sudoku[i][4], 179, sudoku[i][5], 179, sudoku[i][6], 179, sudoku[i][7], 179, sudoku[i][8], 179);
 		
-        kursorOut(180, 8 + i * 4);
+        kursorOut(120, 8 + i * 4);
         if (i+1 == b) {
         	setTextColor(9);
         	printf(" %d", i+1);
@@ -346,4 +378,3 @@ void setTextColor(int color) {
    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
    SetConsoleTextAttribute(hCon,color);
 }
-
