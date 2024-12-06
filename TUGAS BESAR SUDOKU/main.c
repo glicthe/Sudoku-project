@@ -49,18 +49,18 @@ int main(int argc, char *argv[]) {
         switch (choice) {		//Selection berdasarkan input user
             case 1:
                 
-                startGame();		//Memanggil modul startGame
+                startGame(opsi);	//Memanggil modul startGame
                 system("cls");	
                 break;
                 
             case 2:
                 
-                loadGame();		//Memanggil modul loadGame
+                loadGame(opsi);		//Memanggil modul loadGame
                 system("cls"); 
                 break;
             case 3:
                 
-                highScore();		//Memanggil modul highScore
+                highScore(opsi);	//Memanggil modul highScore
                 system("cls"); 
                 break;
             case 4:
