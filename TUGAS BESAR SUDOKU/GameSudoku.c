@@ -89,7 +89,6 @@ void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
 			datasalah = *salah;
 			initPapan(sudoku, table, n);
 			system("cls");
-			printf("%d", *m);
 		//	pthread_t newThread;
 		//	pthread_create(&newThread, NULL, timer, NULL);
 		//	printf("\n");
