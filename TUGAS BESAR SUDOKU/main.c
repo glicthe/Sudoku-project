@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
 
 	//Kamus data		
 	int choice;
+	int opsi;
 	
 	// Loop untuk menampilkan menu sampai user memilih "Exit"
     while (1) {
@@ -55,7 +56,7 @@ int main(int argc, char *argv[]) {
                 
             case 2:
                 
-                loadGame(opsi);		//Memanggil modul loadGame
+                loadGame(opsi);		//Memanggil modulloadGame
                 system("cls"); 
                 break;
             case 3:
