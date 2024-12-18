@@ -7,6 +7,8 @@
 void startGame(int opsi) {
     int mode;
     char nama[50];
+    
+    bannerSudoku(50,2);
     FILE* fp;
     fp = fopen("filename.txt", "a");
     
@@ -19,6 +21,7 @@ void startGame(int opsi) {
     nama[strcspn(nama, "\n")] = 0; // Menghilangkan newline dari input
 	system("cls");
 	
+	bannerSudoku(50,2);
 	kursorOut(67, 10);
     printf("=== Memulai Game Baru ===\n");
     kursorOut(67, 11);
@@ -41,6 +44,7 @@ void startGame(int opsi) {
     }
 
     // Tampilkan mode dan nama pemain
+    bannerSudoku(50,2);
     kursorOut(67, 10);
     printf("Selamat datang, %s!", nama);
     
@@ -58,10 +62,7 @@ void startGame(int opsi) {
 		kursorOut(67, 11);
 		printf("Kamu memilih mode Sulit.");
 		BaseSudoku(mode, opsi);
-	}
-
-
-    
+	}   
 }
 
 // Fungsi untuk memuat game yang tersimpan
@@ -72,11 +73,53 @@ void loadGame(int opsi) {
 }
 
 // Fungsi untuk menampilkan skor tertinggi
-void highscore(int opsi) {
-    printf("\n=== Highscore ===\n");
-    printf("Fitur Highscore belum tersedia.\n");
-    printf("Tekan Enter untuk kembali ke menu utama.");
-    getchar(); // Menunggu user menekan enter sebelum kembali ke menu
+void howToPlay(int opsi) {
+	int pilih;
+	
+	while (1) {
+	system("cls");
+	bannerSudoku(50,2);
+	kursorOut(25,9);
+	kursorOut(70,10);
+    printf("CARA BERMAIN");
+    kursorOut(25,13);
+    printf("1. Kamu akan disuruh untuk input baris (baris disini adalah atas ke bawah) berapa angka yang ingin kamu masukkan");
+    kursorOut(25,16);
+    printf("2. Kamu akan disuruh untuk input kolom (kolom disini adalah kanan ke kiri) berapa angka yang ingin kamu masukkan");
+    kursorOut(25,19);
+    printf("3. Terakhir, masukkan angka yang ingin kamu masukkan ke papan sudoku!!!");
+    kursorOut(24,21);
+    printf("\033[91m%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\033[0m",
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
+	kursorOut(70,24);
+    printf("PERATURAN BERMAIN");
+    kursorOut(25,27);
+    printf("1. Angka yang dimasukkan pada papan harus berbeda di settiap baris, kolom, dan sub bagian papan");
+    kursorOut(25,29);
+    printf("2. Kamu akan menang ketika semua papan sudah terisi dengan angka yang sesuai");
+    kursorOut(25,32);
+    printf("3. Kamu akan kalah ketika jumlah salah melebihi tiga kali");
+    kursorOut(24,36);
+    printf("\033[91m%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\033[0m",
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205,205, 205, 205, 205, 205, 205, 205, 205, 205, 
+	205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
+	kursorOut(24,39);
+    printf("Tekan 1 untuk kembali:  ");
+    scanf("%d", &pilih);
+    
+    if(pilih == 1)
+    	break;
+	else continue;
+	}
 }
 
 // Fungsi untuk keluar dari game

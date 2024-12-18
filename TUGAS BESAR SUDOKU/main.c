@@ -1,21 +1,16 @@
-/*------------------------PROGRAM MAIN SUDOKU------------------------*/
-
-/*-------header--------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "GameSudoku.h"
 #include "Menu.h"
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-/*------------------------PROGRAM------------------------*/
 int main(int argc, char *argv[]) {
+	    int choice;
 
-	//Kamus data		
-	int choice;
-	int opsi;
-	
-	// Loop untuk menampilkan menu sampai user memilih "Exit"
+    // Loop untuk menampilkan menu sampai user memilih "Exit"
     while (1) {
-    	bannerSudoku(50,2);		//Memanggil modul bannerSudoku
+        int opsi;
+        bannerSudoku(50,2);
         kursorOut(71, 9);		//Memanggil modul kursorOut
         printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
 		201, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 
@@ -34,45 +29,46 @@ int main(int argc, char *argv[]) {
 		205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 188);
         setTextColor(15);
         kursorOut(72, 13);
-        printf("1. Start");
+        printf("1. Start\n");
         kursorOut(72, 15);
-        printf("2. Load Game");
+        printf("2. Load Game\n");
         kursorOut(72, 17);
-        printf("3. Highscore");
+        printf("3. How to play\n");
         kursorOut(72, 19);
-        printf("4. Exit");
+        printf("4. Exit\n");
         kursorOut(72, 21);
         printf("Pilih opsi (1-4): ");
         scanf("%d", &choice);
-        getchar(); 			// Scanf untuk menangani enter setelah input angka
-        system("cls"); 			// Membersihkan layar setiap kali menu ditampilkan
+        getchar(); // Untuk menangani enter setelah input angka
+        system("cls"); // Membersihkan layar setiap kali menu ditampilkan
 
-        switch (choice) {		//Selection berdasarkan input user
+        switch (choice) {
             case 1:
-                
-                startGame(opsi);	//Memanggil modul startGame
-                system("cls");	
+                opsi = 1;
+                startGame(opsi);
+                system("cls"); // Bersihkan layar sebelum masuk ke menu Start
                 break;
                 
             case 2:
-                
-                loadGame(opsi);		//Memanggil modulloadGame
-                system("cls"); 
+                opsi = 2;
+                loadGame(opsi);
+                system("cls"); // Bersihkan layar sebelum masuk ke Load Game
                 break;
             case 3:
-                
-                highScore(opsi);	//Memanggil modul highScore
-                system("cls"); 
+                opsi = 3;
+                howToPlay(opsi);
+                system("cls"); // Bersihkan layar sebelum masuk ke Highscore
                 break;
             case 4:
-                exitGame();		//Memanggil modul exitGame
+                exitGame();
                 return 0;
             default:
                 printf("Pilihan tidak valid! Silakan pilih lagi.\n");
-                getchar(); 
+                getchar(); // Menunggu user menekan enter sebelum kembali ke menu
         }
     }
+			
 	
 	return 0;
 }
-/*------------------------END PROGRAM------------------------*/
+

@@ -7,8 +7,7 @@
 #include <unistd.h>
 #include "LoadSudoku.h"
 #include "GameSudoku.h"
-    
-    
+        
 int loadSudoku(struct sudoku** table, int m, int salah){
 	int i,j;
 	FILE* SUDOKU;

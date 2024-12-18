@@ -3,7 +3,7 @@
 
 void startGame(int);
 void loadGame(int);
-void highscore(int);
+void howToPlay(int);
 void exitGame();
 
 #endif

@@ -139,7 +139,7 @@ int BaseSudoku(int mode, int opsi){
 			}
 			else if (salah == 3) {	
 				kursorOut(69, 10);
-				printf("====Sayang Sekali Anda Payah!!====");
+				printf("====Sayang Sekali Anda Lemah!!====");
 				Sleep(1000);
 				system("cls");
 				goto Return;
@@ -153,7 +153,6 @@ int BaseSudoku(int mode, int opsi){
 			Sleep(500);
    			system("cls");
 			return;
-		
 			
 		return 0;
 	}
@@ -178,7 +177,7 @@ void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
 		//	pthread_create(&newThread, NULL, timer, NULL);
 		//	printf("\n");
 			printPapan(sudoku, *salah, i, j);
-			kursorOut(38, 45);
+			kursorOut(38, 50);
 			printf("Masukkan Nomor Baris: ");
 			scanf("%d", &i);
 		//pause game	
@@ -190,13 +189,13 @@ void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
 			if (cek == 0) goto inputInJ;
 			else break;
 		}
-			kursorOut(38, 47);
+			kursorOut(38, 52);
 			printf("Masukkan Nomor Kolom: ");
 			scanf("%d", &j);
 			system("cls");
 			printPapan(sudoku, *salah, i, j);
 		if (sudoku[i-1][j-1] == ' ') {
-			kursorOut(38, 45);
+			kursorOut(38, 50);
 			printf("Masukkan Nomor Yang Ingin Diinput: ");
 			scanf("%d", &val);
 			if (val == table[i-1][j-1].compare) {
@@ -212,7 +211,7 @@ void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
 				}
 			}
 		} else {
-			kursorOut(38, 45);
+			kursorOut(38, 50);
 			printf("Sudoku sudah memiliki nilai!!");
 			Sleep(700);
 			goto inputInJ;
@@ -223,7 +222,7 @@ void play(struct sudoku** table, int* m, char sudoku[9][9], int* salah) {
 
 int PauseGame(struct sudoku** table, int sisa, int salah){
 	int pause = 0;
-	while (pause != 1 || pause != 2) {
+	while (pause != 1 || pause != 2 || pause != 3) {
 		
 		system("cls");
 		kursorOut(71, 10);
@@ -233,12 +232,18 @@ int PauseGame(struct sudoku** table, int sisa, int salah){
 		kursorOut(71, 12);
 		printf("2. Save and Exit");
 		kursorOut(71, 13);
-		printf("Pilih Opsi 1 atau 2: ");
+		printf("3. How to play");
+		kursorOut(71, 14);
+		printf("Pilih Opsi: ");
 		scanf("%d", &pause);	
 		
 		if (pause == 1) return 0;
 		else if (pause == 2) {
 			loadSudoku(table, sisa, salah);
+			return 1;
+		}
+		else if (pause == 3){
+			howToPlay(pause);
 			return 1;
 		}
 		else continue;
@@ -323,7 +328,7 @@ void inputToCompare(struct sudoku** table, int n){
 void hideNumbers(struct sudoku **table, int n, int* m, int mode) {
     int i, j, x, y, size = n * n;
     // 1. atur mask=0 untuk semua sel
-    if (mode == 1) *m = 45;
+    if (mode == 1) *m = 79;
     else if (mode == 2) *m = 30;
     else *m = 20;
     
@@ -356,13 +361,14 @@ void printPapan(char sudoku[9][9], int salah, int b, int k)
 {
 	int i;
 	
-	kursorOut(38,10);
+	bannerSudoku(50,2);
+	kursorOut(38,13);
 	printf("salah: %d/3", salah);
 		
 	kursorOut(25, 15);
 	printf("ketik 11 untuk pause game");
 	
-	kursorOut(54,5);
+	kursorOut(54,10);
 	for(i=0;i<9;i++){
 		if (i+1 == k){
 			setTextColor(9);
@@ -371,7 +377,7 @@ void printPapan(char sudoku[9][9], int salah, int b, int k)
 		} else printf("   %d  ",i+1);
 	}
     // Baris horizontal atas
-    kursorOut(54, 6);
+    kursorOut(54, 11);
     printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
            218, 196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194, 
            196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194, 196, 196, 196, 196, 196, 194,
@@ -380,51 +386,66 @@ void printPapan(char sudoku[9][9], int salah, int b, int k)
     // Nomor kolom dan baris sel dengan kontennya
     for(i = 0; i < 9; i++) {
         // Baris untuk nomor        
-        kursorOut(54, 7 + i * 4); 
-        printf("%c     %c     %c     %c     %c     %c     %c     %c     %c     %c", 
+        kursorOut(54, 12 + i * 4); 
+        printf("%c     %c     %c     \033[91m%c\033[0m     %c     %c     \033[91m%c\033[0m     %c     %c     %c", 
             179, 179, 179, 179, 179, 179, 179, 179, 179, 179);
 		// Baris untuk konten
-        kursorOut(54, 8 + i * 4);
-		printf("%c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c  %c", 
+        kursorOut(54, 13 + i * 4);
+		printf("%c  %c  %c  %c  %c  %c  \033[91m%c\033[0m  %c  %c  %c  %c  %c  \033[91m%c\033[0m  %c  %c  %c  %c  %c  %c", 
                179, sudoku[i][0], 179, sudoku[i][1], 179, sudoku[i][2], 179, sudoku[i][3], 179, 
                sudoku[i][4], 179, sudoku[i][5], 179, sudoku[i][6], 179, sudoku[i][7], 179, sudoku[i][8], 179);
 		
-        kursorOut(180, 8 + i * 4);
+        kursorOut(110, 13 + i * 4);
         if (i+1 == b) {
         	setTextColor(9);
         	printf(" %d", i+1);
         	setTextColor(15);
 		} else printf(" %d", i+1);
         // Baris kosong
-        kursorOut(54, 9 + i * 4);
-        printf("%c     %c     %c     %c     %c     %c     %c     %c     %c     %c", 
+        kursorOut(54, 14 + i * 4);
+        printf("%c     %c     %c     \033[91m%c\033[0m     %c     %c     \033[91m%c\033[0m     %c     %c     %c", 
                179, 179, 179, 179, 179, 179, 179, 179, 179, 179);
+        
         
         // Garis horizontal pembatas (kecuali baris terakhir)
         if(i < 8) {
-            kursorOut(54, 10 + i * 4);
+        	if(i == 2 || i == 5){
+        		setTextColor(12);
+        		kursorOut(54, 15 + i * 4);
+        		printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
+                   195, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196,
+                   196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196,
+                   196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 196, 180);
+			} 
+			else {
+			setTextColor(15);
+            kursorOut(54, 15 + i * 4);
             printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
                    195, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197,
                    196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197,
                    196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 197, 196, 196, 196, 196, 196, 180);
+        	}
+         	kursorOut(72, 15 + i * 4);
+        	printf("\033[91m%c\033[0m", 179);
+        	kursorOut(90, 15 + i * 4);
+        	printf("\033[91m%c\033[0m", 179);
         }
     }
 
     // Garis horizontal bawah
-    kursorOut(54, 42);
+    kursorOut(54, 47);
     printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 
            192, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193,
            196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193,
            196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 193, 196, 196, 196, 196, 196, 217);
-    
 }
 
 void kursorOut(int x, int y) {
-    COORD p;
+    COORD koor;
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    p.X = x;
-    p.Y = y;
-    SetConsoleCursorPosition(hOut, p);
+    koor.X = x;
+    koor.Y = y;
+    SetConsoleCursorPosition(hOut, koor);
 }
 
 void setTextColor(int color) {
